@@ -19,6 +19,13 @@ object Main {
     val voice = VoiceRecording("Jimo", "xx.org")
     println(showNotification(sms))
     println(showNotification(voice))
+
+    val info = Seq("12345", "jimo@jj.com")
+    val email = Email("jimo@jj.com", "hehe", "like you")
+    println(showImportantNotification(email, info))
+    println(showImportantNotification(sms, info))
+
+    println(goIdle(Phone("huawei")))
   }
 
   def showNotification(notification: Notification): String = {
@@ -30,5 +37,31 @@ object Main {
       case VoiceRecording(name, link) =>
         s"you received a Voice Recording from $name,click link: $link"
     }
+  }
+
+  def showImportantNotification(notification: Notification, info: Seq[String]): String = {
+    notification match {
+      case Email(email, _, _) if info.contains(email) =>
+        "got important email!"
+      case SMS(caller, _) if info.contains(caller) =>
+        "got important sms"
+      case other => showNotification(other)
+    }
+  }
+
+  def goIdle(device: Device) = device match {
+    case p: Phone => p.screenOff
+    case c: Computer => c.screenSaveOn
+  }
+
+  sealed abstract class Furniture
+
+  case class Table() extends Furniture
+
+  case class Chair() extends Furniture
+
+  def findPlaceToSit(piece: Furniture): String = piece match {
+    case t: Table => "center"
+    case c: Chair => "wall"
   }
 }
