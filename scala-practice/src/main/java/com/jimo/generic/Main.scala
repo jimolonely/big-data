@@ -9,4 +9,7 @@ object Main {
     println(stack.pop())
     println(stack.pop())
   }
+
+  def fact(n: Int): Int =
+    if (n == 0) 1 else n * fact(n - 1)
 }

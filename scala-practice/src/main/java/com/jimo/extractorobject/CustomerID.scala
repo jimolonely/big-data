@@ -4,7 +4,7 @@ import scala.util.Random
 
 object CustomerID {
 
-  def apply(name: String) = {
+  def apply(name: String): String = {
     val id = s"$name--${Random.nextLong}"
     println(id)
     id
