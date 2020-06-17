@@ -80,5 +80,90 @@ class 类名(形参列表) { // 主构造器
 }
 ```
 
+实例：
+```scala
+  def main(args: Array[String]): Unit = {
+    val jimo = new Student("jimo", 18)
+    jimo.hello()
+  }
+
+class Student(name: String, ageIn: Int) {
+
+  var age: Int = ageIn
+  println("hello 1")
+
+  def hello(): Unit = {
+    println("hello,I am " + name + ",age = " + age)
+  }
+
+  println("hello 2")
+
+  age += 10
+}
+// hello 1
+// hello 2
+// hello,I am jimo,age = 28
+```
+scala类里可以写任何语句，这是和java不同的地方，那原理是什么呢？
+通过编译后的class文件可以看出：
+```java
+public class Student {
+  private final String name;
+  
+  private int age;
+  
+  public Student(String name, int ageIn) {
+    this.age = ageIn;
+    Predef$.MODULE$.println("hello 1");
+    Predef$.MODULE$.println("hello 2");
+    age_$eq(age() + 10);
+  }
+  
+  public int age() {
+    return this.age;
+  }
+  
+  public void age_$eq(int x$1) {
+    this.age = x$1;
+  }
+  
+  public void hello() {
+    Predef$.MODULE$.println((new StringBuilder()).append("hello,I am ").append(this.name).append(",age = ").append(BoxesRunTime.boxToInteger(age())).toString());
+  }
+}
+```
+这些语句实际上是放在构造方法里执行的。
+
+### 构造器的重载
+
+辅构造器必须调用主构造器(间接调用也可以)
+```scala
+class Student(name: String, ageIn: Int) {
+
+  def this(name: String) {
+    this(name, 0)
+  }
+
+  def this(age: Int) {
+    this(null, age)
+  }
+
+  def this() {
+    this("jimo")
+  }
+}
+```
+### 私有化主构造器
+
+用于不让使用者new 一个实例
+```scala
+class Teacher private() {
+  def this(name: String) {
+    this()
+  }
+}
+```
+
+
 
 
