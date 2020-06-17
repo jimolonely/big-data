@@ -164,6 +164,104 @@ class Teacher private() {
 }
 ```
 
+### 属性
+
+先看以下声明：
+
+```scala
+class P1(name: String) {
+  println(name)
+}
+
+class P2(val name: String) {
+  println(name)
+}
+
+class P3(var name: String) {
+  println(name)
+}
+```
+生成的不同在于：是否会变成成员变量;
+val和var变量代表是否可读
+```java
+public class P1 {
+  public P1(String name) {
+    Predef$.MODULE$.println(name);
+  }
+}
+
+public class P2 {
+  private final String name;
+  
+  public String name() {
+    return this.name;
+  }
+  
+  public P2(String name) {
+    Predef$.MODULE$.println(name);
+  }
+}
+
+public class P3 {
+  private String name;
+  
+  public String name() {
+    return this.name;
+  }
+  
+  public void name_$eq(String x$1) {
+    this.name = x$1;
+  }
+  
+  public P3(String name) {
+    Predef$.MODULE$.println(name());
+  }
+}
+```
+
+### Bean属性
+
+由于javaBeans规范了getX()和setX()等规范方法，所以很多框架采用(mybatis)，由于需要反射，所以
+需要应用规范。
+
+```scala
+class P4 {
+  var name: String = _
+  @BeanProperty
+  var age: Int = 0
+}
+
+val p = new P4()
+p.setAge(19)
+println(p.getAge)
+```
+
+### 对象创建流程
+
+1. 加载类信息（属性、方法）
+2. 在堆中给对象开辟空间
+3. 调用主构造器对属性进行初始化
+4. 使用辅助构造器进行初始化
+
+```scala
+class P5 {
+  var name: String = "hehe"
+
+  def this(name: String) {
+    this()
+    println(this.name)
+    this.name = name
+    println(this.name)
+  }
+}
+
+new P5("jimo")
+输出：
+hehe
+jimo
+```
+
+
 
 
 
