@@ -42,5 +42,48 @@ package com.jimo{
 }
 ```
 
+## 包可以嵌套使用
+
+如上面第三种情况
+
+## 包嵌套的作用域
+
+* 子包可以直接访问父包内容
+* 使用优先级是就近原则，优先本包内，再是父包
+* 父包要访问子包内容，需要引入
+
+```scala
+package com.jimo {
+
+
+  object Test {
+
+    import com.jimo.web.Web
+
+    def main(args: Array[String]): Unit = {
+      val web = new Web()
+    }
+  }
+
+  package web {
+
+    class Web {}
+
+  }
+
+}
+```
+
+## 包的绝对路径
+
+用于包的冲突引入
+
+```scala
+class Web {
+  @_root_.scala.beans.BeanProperty
+  var url: String = _
+}
+```
+
 
 
