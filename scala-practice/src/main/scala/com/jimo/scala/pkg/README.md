@@ -139,5 +139,82 @@ public final class package$ {
 * 每个包有且只有一个包对象
 * 包对象用来增加包的功能，补充
 
+# 包的可见性
 
+对比java的四种访问权限
 
+1. 属性：默认是public的
+2. 方法：默认是public
+3. private为私有权限，但在同类和伴生对象可用
+    ```scala
+    class A {
+      private var a: Int = 18
+    
+      def say(): Unit = {
+        println("hello")
+      }
+    }
+    
+    object A {
+      def main(args: Array[String]): Unit = {
+        val a = new A
+        println(a.a)
+        a.say()
+      }
+    }
+    
+    object B {
+      def main(args: Array[String]): Unit = {
+        val a = new A
+        // 不能访问
+        // println(a.a)
+        a.say()
+      }
+    }
+    ```
+4. protected: 比java更严格，只能子类访问，同包不能访问
+5. scala没有public关键字，因为默认就是public的
+
+```scala
+package com.jimo.scala.pkg
+
+class A {
+  private var a: Int = 18
+
+  def say(): Unit = {
+    println("hello")
+  }
+
+  // 增加包访问权限
+  // 1.private依然存在，同类可访问
+  // 2.同时扩大了权限，com.jimo包下的所有类都可以访问
+  private[jimo] var b = "bbb"
+}
+
+object B {
+  def main(args: Array[String]): Unit = {
+    val a = new A
+    // 不能访问
+    // println(a.a)
+    a.say()
+    println(a.b)
+  }
+}
+```
+
+# 包的引入
+
+1. 包的引入可以出现在任何地方，尽量保证作用域小
+2. `_` 等价于 java 的 `*`
+3. 引入选择器选择引入需要的类：
+    ```scala
+    import scala.collection.mutable.{HashMap, HashSet}
+    ```
+4. 引入同名的类可以重命名：
+    ```scala
+    import java.util.{HashMap => JavaHashMap}
+    ```
+5. 可以隐藏某个类：
+    ```scala
+    import java.util.{HashSet => _, _}
+    ```
