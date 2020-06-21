@@ -265,6 +265,66 @@ jimo
 
 scala里重写父类非抽象方法必须加 `override` 修饰。
 
+### 构造器的调用
+
+```scala
+class J {
+  var name: String = _
+  println("J...")
+}
+
+class JI extends J {
+  def this(name: String) {
+    this
+    this.name = name
+    println("JI...")
+  }
+}
+
+new JI()
+println("=========")
+new JI("jimo")
+```
+结果：
+```shell
+J...
+=========
+J...
+JI...
+```
+
+**scala里：子类的主类和辅助构造器不能直接调用父类的构造器；**
+只有通过类声明时直接调用。
+
+```scala
+class K(name: String) {
+  println("K")
+}
+
+class KI(name: String) extends K(name = name) {
+  println("KI")
+
+  def this() {
+    this(null)
+    println("KI:this")
+  }
+}
+
+new KI()
+println("=========")
+new KI("jimo")
+```
+
+结果：
+```shell script
+K
+KI
+KI:this
+=========
+K
+KI
+```
+
 # 类型检查与转换
 
 classOf[T]

@@ -15,9 +15,9 @@ object TypeConvert {
 }
 
 class P {
-
+  println("P")
 }
 
 class PI extends P {
-
+  println("PI")
 }
