@@ -261,6 +261,47 @@ hehe
 jimo
 ```
 
+# 继承
+
+scala里重写父类非抽象方法必须加 `override` 修饰。
+
+# 类型检查与转换
+
+classOf[T]
+
+```scala
+    println(classOf[String])
+    println(classOf[P])
+    val s = "s"
+    println(s.getClass.getName)
+```
+isInstanceOf
+```scala
+    val s = "s"
+    println(s.isInstanceOf[String])
+```
+asInstanceOf
+```scala
+class P {
+}
+
+class PI extends P {
+}
+
+val pi = new PI
+val p: P = pi.asInstanceOf[P]
+println(p.isInstanceOf[P], p.isInstanceOf[PI])
+```
+
+输出：
+```scala
+class java.lang.String
+class com.jimo.scala.oop.P
+java.lang.String
+true
+(true,true) // p既是子类，也是父类
+```
+
 
 
 

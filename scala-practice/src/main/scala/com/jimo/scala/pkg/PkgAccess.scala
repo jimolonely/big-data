@@ -10,7 +10,7 @@ class A {
 
   def say(): Unit = {
     println("hello")
-    new util.HashSet[String]()
+//    new util.HashSet[String]()
   }
 
   private[jimo] var b = "bbb"
