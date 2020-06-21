@@ -85,5 +85,59 @@ class Web {
 }
 ```
 
+# 包对象
+
+由于虚拟机限制，包里不能写变量、函数，包对象就是为了弥补这个缺陷。
+
+假如要在包 `web` 里声明一个函数，要么在其父包里声明一个包对象：
+
+```scala
+package com.jimo.scala.pkg {
+
+  package object web {
+    def search(): Unit = {
+      println("search")
+    }
+  }
+  package web {
+
+    object Web {
+      def main(args: Array[String]): Unit = {
+        search()
+      }
+    }
+
+  }
+
+}
+```
+包对象的名称要和包名一样，本质实现，查看其class文件：
+
+会在 `com.jimo.scala.pkg.web`包下生成一个package.class和package$.class:
+```java
+public final class package {
+  public static void search() {
+    package$.MODULE$.search();
+  }
+}
+
+public final class package$ {
+  public static final package$ MODULE$;
+  
+  public void search() {
+    scala.Predef$.MODULE$.println("search");
+  }
+  
+  private package$() {
+    MODULE$ = this;
+  }
+}
+```
+
+注意事项：
+
+* 每个包有且只有一个包对象
+* 包对象用来增加包的功能，补充
+
 
 
