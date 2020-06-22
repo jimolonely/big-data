@@ -362,7 +362,150 @@ true
 (true,true) // p既是子类，也是父类
 ```
 
+# 字段隐藏与覆写
 
+### java的字段隐藏
+
+java中没有字段的覆写，只有方法的覆写。
+
+但是可以模拟覆写的效果，原因是隐藏机制。
+
+```java
+public class JavaOverrideDemo {
+    public static void main(String[] args) {
+        Sub sub = new Sub();
+        System.out.println(sub.s);
+
+        Super sub2 = new Sub();
+        System.out.println(sub2.s);
+
+        System.out.println(((Super) sub).s);
+    }
+}
+
+class Super {
+    String s = "super";
+}
+
+class Sub extends Super {
+    String s = "sub";
+}
+/*
+sub
+super
+super
+*/
+```
+
+### scala字段覆写
+
+```scala
+object ScalaOverrideDemo {
+  def main(args: Array[String]): Unit = {
+    val a: AA = new BB
+    val b: BB = new BB
+    println("a.age=" + a.age)
+    println("b.age=" + b.age)
+  }
+}
+
+class AA {
+  val age: Int = 10
+}
+
+class BB extends AA {
+  override val age: Int = 20
+}
+/*
+a.age=20
+b.age=20
+*/
+```
+
+原理很简单，看看生成的class文件：
+```java
+public class AA {
+  private final int age = 10;
+  
+  public int age() {
+    return this.age;
+  }
+}
+
+public class BB extends AA {
+  private final int age = 20;
+  
+  public int age() {
+    return this.age;
+  }
+}
+```
+也就是java的方法重写。
+
+**val字段只可以重写父类的val字段，或者 同名的无参方法**
+
+> 为啥不能重写 `var` 修饰的字段？
+> 因为，如果重写父类的var变量，那么就会生成 `field_$eq`的设值方法，
+> 也就是说子类会继承这个方法，常量拥有set方法显然不行。
+
+```scala
+object ScalaOverrideDemo {
+  def main(args: Array[String]): Unit = {
+    val a: AA = new BB
+    val b: BB = new BB
+    println("a.name=" + b.name)
+    println("b.name=" + b.name)
+  }
+}
+
+class AA {
+  def name(): String = {
+    "AA"
+  }
+}
+
+class BB extends AA {
+  override val name: String = "BB"
+}
+/*
+a.name=BB
+b.name=BB
+*/
+```
+
+那什么时候可以重写 `var` 修饰的字段呢？
+
+在抽象类中的字段：
+
+```scala
+abstract class CC {
+  var height: Int
+}
+
+class DD extends CC {
+  override var height: Int = 20
+}
+```
+原理很简单，字段在抽象类里压根就不生成，只有抽象方法：
+```java
+public abstract class CC {
+  public abstract int height();
+  
+  public abstract void height_$eq(int paramInt);
+}
+
+public class DD extends CC {
+  private int height = 20;
+  
+  public int height() {
+    return this.height;
+  }
+  
+  public void height_$eq(int x$1) {
+    this.height = x$1;
+  }
+}
+```
 
 
 
