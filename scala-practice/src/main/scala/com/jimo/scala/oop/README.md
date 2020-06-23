@@ -507,5 +507,33 @@ public class DD extends CC {
 }
 ```
 
+# 抽象类
+
+1. abstract关键字修饰class
+2. 抽象方法不能用abstract关键字修饰
+3. 方法也可实现，字段也可初始化
+
+# scala类层级关系
+
+1. 所有类都是AnyRef的子类，类似java的Object
+2. AnyVal和AnyRef都是Any的子类，Any是根节点
+3. Any中定义了isInstanceOd, asInstanceOf以及hash
+4. Null类型的唯一实例就是null对象，可以将null赋给任何引用，但不能赋给值类型的变量
+5. Nothing类没有实例，对于泛型有用处，例如：空列表Nil和类型是List[Nothing],他是List[T]的子类型
+
+```scala
+    var n: Long = null
+    println(n)
+```
+```shell script
+Error:(5, 19) an expression of type Null is ineligible for implicit conversion
+    var n: Long = null
+Error:(5, 19) type mismatch;
+ found   : Null(null)
+ required: Long
+    var n: Long = null
+```
+
+
 
 
