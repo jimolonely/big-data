@@ -534,6 +534,78 @@ Error:(5, 19) type mismatch;
     var n: Long = null
 ```
 
+# scala伴生对象--解决静态问题
+
+按理说，scala是纯OOP的语言，不应该有静态对象和静态属性。
+
+但是，必须要有静态概念，因为要和java打通。
+
+于是，scala通过【伴生对象】来模拟类对象。
+
+```scala
+  def main(args: Array[String]): Unit = {
+    println(CCC.name)
+  }
+
+/**
+ * 当类名和object名称一样，且放在同一个scala文件中
+ * 1.object CCC 为伴生对象
+ * 2.class CCC 为伴生类
+ * 3.将静态内容写在伴生对象里，普通属性写在伴生类
+ */
+object CCC {
+  var name: String = "jimo"
+}
+
+class CCC {
+  var sex: Boolean = true
+}
+```
+
+通过查看class文件可以理解实现原理：
+```java
+public class CCC {
+  private boolean sex = true;
+  
+  public static void name_$eq(String paramString) {
+    CCC$.MODULE$.name_$eq(paramString);
+  }
+  
+  public static String name() {
+    return CCC$.MODULE$.name();
+  }
+  
+  public boolean sex() {
+    return this.sex;
+  }
+  
+  public void sex_$eq(boolean x$1) {
+    this.sex = x$1;
+  }
+}
+
+public final class CCC$ {
+  public static final CCC$ MODULE$;
+  
+  private String name;
+  
+  public String name() {
+    return this.name;
+  }
+  
+  public void name_$eq(String x$1) {
+    this.name = x$1;
+  }
+  
+  private CCC$() {
+    MODULE$ = this;
+    this.name = "jimo";
+  }
+}
+```
+实际上，scala没有生成静态内容，只不过将伴生对象生成了一个新的类，实现属性的get方法调用。
+
+
 
 
 
