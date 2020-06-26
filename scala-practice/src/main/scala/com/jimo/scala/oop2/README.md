@@ -192,3 +192,84 @@ public class TAI implements TA {
 trait Serializable extends Any with java.io.Serializable
 ```
 
+## trait的动态混入（mixin）
+
+* 不继承特质，但又想使用特质的功能：可以在创建对象时(抽象类也可以)混入特质
+
+```scala
+  def main(args: Array[String]): Unit = {
+    val b = new MysqlDB with TB
+    b.insert(1)
+  }
+
+trait TB {
+  def insert(id: Int): Unit = {
+    println("插入数据=" + id)
+  }
+}
+
+class MysqlDB {}
+```
+看看如何实现：
+```java
+  public void main(String[] args) {
+    MysqlDB b = new TraitDemo03$$anon$1();
+    ((TB)b).insert(1);
+  }
+  
+  public final class TraitDemo03$$anon$1 extends MysqlDB implements TB {
+    public void insert(int id) {
+      TB$class.insert(this, id);
+    }
+    
+    public TraitDemo03$$anon$1() {
+      TB$class.$init$(this);
+    }
+  }
+```
+看来是生成了一个匿名类。
+
+* 动态混入的优点：可以在不影响原始类的情况下加功能，耦合性很低
+
+```scala
+new BB with TB {
+  override def haha(): Unit = {}
+}
+
+trait TB {
+  def insert(id: Int): Unit = {
+    println("插入数据=" + id)
+  }
+}
+
+abstract class BB {
+  def haha(): Unit
+}
+```
+
+# 总结
+
+创建对象的方式有几种
+
+* new
+* apply
+* 动态方式
+* 匿名子类
+
+说说apply的方式：通过伴生对象实现,为什么要伴生对象呢？
+
+因为，伴生对象可以访问类的所有属性，包括私有的。
+
+```scala
+  def main(args: Array[String]): Unit = {
+    val a = AAA.apply()
+    println(a)
+  }
+
+class AAA {}
+
+object AAA {
+  def apply(): AAA = new AAA()
+}
+```
+
