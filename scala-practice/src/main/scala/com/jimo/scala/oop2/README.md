@@ -130,4 +130,65 @@ public class Airliner extends Plane implements Move {
 }
 ```
 
+## trait里实现方法
+
+trait既可以定义抽象方法，也可以实现默认方法。
+
+```scala
+trait TA {
+  def hello(): Unit = {
+    println("TA hello()")
+  }
+
+  def go(): Unit
+}
+
+class TAI extends TA {
+  override def go(): Unit = {
+    println("TAI go()")
+  }
+}
+```
+
+看看怎么实现的：
+
+```java
+public interface TA {
+  void hello();
+  
+  void go();
+}
+public abstract class TA$class {
+  public static void $init$(TA $this) {}
+  
+  public static void hello(TA $this) {
+    Predef$.MODULE$.println("TA hello()");
+  }
+}
+
+public class TAI implements TA {
+  public void hello() {
+    TA$class.hello(this);
+  }
+  
+  public TAI() {
+    TA$class.$init$(this);
+  }
+  
+  public void go() {
+    Predef$.MODULE$.println("TAI go()");
+  }
+}
+```
+
+可以看出同时生成了一个接口，还有一个抽象类，抽象类负责实现默认方法，
+然后被调用。
+
+## java中的接口都可以当作trait使用
+
+经过上面本质的分析，trait就是接口和抽象类的组合，所以当然可以使用java的接口。
+
+```scala
+trait Serializable extends Any with java.io.Serializable
+```
 
