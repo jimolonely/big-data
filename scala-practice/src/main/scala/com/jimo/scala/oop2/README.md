@@ -78,5 +78,56 @@ public final class SSingleton$ {
 }
 ```
 
+# 特质与接口
+
+scala里没有接口，使用特质来代替接口的概念。
+
+多个类具有相同的特征，就可以抽象出来。
+
+trait可看作对继承的一种补充
+
+## trait的使用
+
+* 没有父类：class 类名 extends 特质1 with 特质2 with ...
+* 有父类：class 类名 extends 父类 with 特质1 with 特质2 with ...
+
+```scala
+trait Move {
+  def fly(): Unit
+}
+
+abstract class Plane {}
+
+class Airliner extends Plane with Move {
+  override def fly(): Unit = {
+    println("客机使用翅膀飞行")
+  }
+}
+
+class Helicopter extends Move {
+  override def fly(): Unit = {
+    println("直升机使用螺旋桨飞行")
+  }
+}
+```
+
+查看编译后的class文件：可以看到变成了接口
+```java
+public interface Move {
+  void fly();
+}
+
+public class Helicopter implements Move {
+  public void fly() {
+    Predef$.MODULE$.println(");
+  }
+}
+
+public class Airliner extends Plane implements Move {
+  public void fly() {
+    Predef$.MODULE$.println(");
+  }
+}
+```
 
 
