@@ -247,6 +247,143 @@ abstract class BB {
 }
 ```
 
+## 叠加特质
+
+看一个多层次的继承
+
+```scala
+class Mysql {}
+
+trait Op {
+  println("Op...")
+
+  def insert(id: Int): Unit
+}
+
+trait Data extends Op {
+  println("Data...")
+
+  override def insert(id: Int): Unit = {
+    println("插入数据+" + id)
+  }
+}
+
+trait DB extends Data {
+  println("DB...")
+
+  override def insert(id: Int): Unit = {
+    println("向数据库 ")
+    super.insert(id)
+  }
+}
+
+trait File extends Data {
+  println("File...")
+
+  override def insert(id: Int): Unit = {
+    println("向文件 ")
+    super.insert(id)
+  }
+}
+```
+
+然后看看调用：
+
+```scala
+  def main(args: Array[String]): Unit = {
+    val mysql = new Mysql with DB with File
+//    mysql.insert(1)
+  }
+```
+先来看看构建顺序：
+
+* 构建顺序与声明的顺序一样（从左至右）
+
+看看结果：
+
+```scala 
+Op...
+Data...
+DB...
+File...
+```
+
+接下来看看执行顺序：
+
+```scala
+mysql.insert(1)
+```
+
+执行顺序：
+
+* 刚好是相反的，只要查找到一个父类的方法就执行
+
+```scala
+向文件 
+向数据库 
+插入数据+1
+```
+
+这里我就很好奇，为什么 insert方法只执行了一遍？
+
+* 解释：scala特质中如果使用了super，并不表示调用方法，而是向前面（左边）继续查找特质，如果找不到，才会去父特质查找
+
+看一下class：
+```java
+  public void main(String[] args) {
+    Mysql mysql = new TraitDemo04$$anon$1();
+    ((File)mysql).insert(1);
+  }
+  
+  public final class TraitDemo04$$anon$1 extends Mysql implements DB, File {
+    public void insert(int id) {
+      File$class.insert(this, id);
+    }
+    
+    public TraitDemo04$$anon$1() {
+      Op$class.$init$(this);
+      Data$class.$init$(this);
+      DB$class.$init$(this);
+      File$class.$init$(this);
+    }
+  }
+
+public abstract class File$class {
+
+  public static void insert(File $this, int id) {
+    Predef$.MODULE$.println("向文件 ");
+    $this.com$jimo$scala$oop2$File$$super$insert(id);
+  }
+}
+```
+
+其实class也没有透露更多细节，发现mysql实际上是最右边的特质File的实例，当File的insert
+执行到 `super.insert`时，会继续找到 DB的insert执行，再执行 `super.insert` 发现左边已经没有
+特质了，所以执行父特质 `Data` 的insert方法。 
+
+### 指定父类执行
+
+叠加特质时可以指定调用父类的特质方法
+
+```scala
+trait File extends Data {
+  println("File...")
+
+  override def insert(id: Int): Unit = {
+    println("向文件 ")
+    super[Data].insert(id)
+    //    super.insert(id)
+  }
+}
+```
+
+这时候发现结果就只剩2句话了：
+```scala
+向文件 
+插入数据+1
+```
+
+
 # 总结
 
 创建对象的方式有几种
