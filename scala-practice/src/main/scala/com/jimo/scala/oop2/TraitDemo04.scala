@@ -41,3 +41,10 @@ trait File extends Data {
     //    super.insert(id)
   }
 }
+
+trait File2 extends Op {
+  abstract override def insert(id: Int): Unit = {
+    println("File2...")
+    super.insert(id)
+  }
+}

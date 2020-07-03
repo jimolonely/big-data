@@ -383,6 +383,95 @@ trait File extends Data {
 插入数据+1
 ```
 
+### 特质的抽象方法实现
+
+注意abstract, 不加会报错
+
+```scala
+trait Op {
+  println("Op...")
+
+  def insert(id: Int): Unit
+}
+trait File2 extends Op {
+  abstract override def insert(id: Int): Unit = {
+    println("File2...")
+    super.insert(id)
+  }
+}
+```
+
+### 富接口
+
+特质中既有抽象方法，又有已经实现的方法。
+
+### trait中字段的继承
+
+```scala
+object TraitDemo05 {
+  def main(args: Array[String]): Unit = {
+    val mysql = new Mysql5 with Op5 {
+      override var opType: String = "mysql-insert"
+    }
+    println(mysql.opType)
+    val mysql1 = new Mysql5 with DB5
+    println(mysql1.opType)
+  }
+}
+
+trait Op5 {
+  var opType: String
+}
+
+trait DB5 extends Op5 {
+  override var opType: String = "db-insert"
+}
+
+class Mysql5 {}
+```
+实际上是作为了类的一个属性。
+```java
+ public void main(String[] args) {
+    Mysql5 mysql = new TraitDemo05$$anon$2();
+    scala.Predef$.MODULE$.println(((Op5)mysql).opType());
+    Mysql5 mysql1 = new TraitDemo05$$anon$1();
+    scala.Predef$.MODULE$.println(((DB5)mysql1).opType());
+  }
+  
+  public final class TraitDemo05$$anon$2 extends Mysql5 implements Op5 {
+    private String opType = "mysql-insert";
+    
+    public String opType() {
+      return this.opType;
+    }
+    
+    public void opType_$eq(String x$1) {
+      this.opType = x$1;
+    }
+  }
+  
+  public final class TraitDemo05$$anon$1 extends Mysql5 implements DB5 {
+    private String opType;
+    
+    public String opType() {
+      return this.opType;
+    }
+    
+    @TraitSetter
+    public void opType_$eq(String x$1) {
+      this.opType = x$1;
+    }
+    
+    public TraitDemo05$$anon$1() {
+      DB5$class.$init$(this);
+    }
+  }
+  
+  private TraitDemo05$() {
+    MODULE$ = this;
+  }
+}
+```
 
 # 总结
 
