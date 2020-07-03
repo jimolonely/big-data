@@ -473,6 +473,72 @@ class Mysql5 {}
 }
 ```
 
+### trait构造的执行顺序
+
+首先看看继承关系：
+```scala
+trait A6 {
+  println("A6...")
+}
+
+trait B6 extends A6 {
+  println("B6...")
+}
+
+trait C6 extends B6 {
+  println("C6...")
+}
+
+trait D6 extends B6 {
+  println("D6...")
+}
+
+class E6 {
+  println("E6...")
+}
+```
+
+1. 声明类时同时混入特质
+
+```scala
+class F6 extends E6 with C6 with D6 {
+  println("F6...")
+}
+
+val f1 = new F6
+```
+输出：
+```java
+E6...
+A6...
+B6...
+C6...
+D6...
+F6...
+```
+
+2. 构建对象时动态混入
+
+```scala
+class K6 extends E6 {
+  println("K6...")
+}
+
+val k = new K6 with C6 with D6
+println(k)
+```
+
+输出：
+```java
+E6...
+K6...
+A6...
+B6...
+C6...
+D6...
+```
+可以理解为：第二种在混入特质时，对象已经创建了。
+
 # 总结
 
 创建对象的方式有几种
