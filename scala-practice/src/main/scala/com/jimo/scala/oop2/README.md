@@ -539,6 +539,25 @@ D6...
 ```
 可以理解为：第二种在混入特质时，对象已经创建了。
 
+### trait继承类
+
+可以扩展类的功能。
+
+```scala
+object TraitDemo07 {
+  def main(args: Array[String]): Unit = {
+    val log = new LogExp {}
+    log.log()
+  }
+}
+
+trait LogExp extends Exception {
+  def log(): Unit = {
+    println(getMessage)
+  }
+}
+```
+
 # 总结
 
 创建对象的方式有几种
