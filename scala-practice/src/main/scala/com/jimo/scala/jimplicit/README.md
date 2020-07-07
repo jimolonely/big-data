@@ -65,4 +65,45 @@ val num: Int = 3.5 // 转换ok
 
 # 通过隐式转换丰富类功能
 
+给Mysql类增加delete函数
+
+```scala
+object ImplicitDemo02 {
+  def main(args: Array[String]): Unit = {
+    implicit def addDelFunc(mysql: Mysql): DB = {
+      new DB
+    }
+
+    val mysql = new Mysql
+    mysql.insert()
+    mysql.delete()
+  }
+}
+
+class Mysql {
+  def insert(): Unit = {
+    println("insert")
+  }
+}
+
+class DB {
+  def delete(): Unit = {
+    println("delete")
+  }
+}
+```
+编译后结果：
+```java
+  private final DB addDelFunc$1(Mysql mysql) {
+    return new DB();
+  }
+  
+  public void main(String[] args) {
+    Mysql mysql = new Mysql();
+    mysql.insert();
+    addDelFunc$1(mysql).delete();
+  }
+```
+
+
 
