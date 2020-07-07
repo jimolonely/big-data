@@ -148,3 +148,54 @@ class DB {
 ```
 隐式值优先
 
+# 隐式类
+
+使用implicit修饰的声明类，在集合中会发挥重要作用。
+
+1. 隐式类构造参数只能有一个
+2. 隐式类不能是顶级的，必须定义在类、伴生对象或包对象中
+3. 不能是case class
+
+```scala
+  def main(args: Array[String]): Unit = {
+    implicit class MysqlToDB(mysql: Mysql) {
+      def close(): Unit = {
+        println("close")
+      }
+    }
+
+    val mysql = new Mysql
+    mysql.insert()
+    mysql.close()
+  }
+```
+编译：
+```java
+  private final ImplicitDemo044$MysqlToDB$2 MysqlToDB$1(Mysql mysql) {
+    return new ImplicitDemo044$MysqlToDB$2(mysql);
+  }
+  
+  public void main(String[] args) {
+    Mysql mysql = new Mysql();
+    mysql.insert();
+    MysqlToDB$1(mysql).close();
+  }
+```
+
+# 隐式转换的时机
+
+1. 当方法参数与目标类型不一致时
+2. 当对象调用所在类中不存在方法或成员时，会根据类型去寻找隐式转换
+
+编译器如何查找？
+
+1. 在当前代码作用域查找隐式实体（隐式方法、类、对象）
+2. 找不到再继续在隐式参数的类型的作用域查找，包括与该类型相关联的全部伴生模块（尽量避免）
+    1. T with A with B with C, 那么A，B，C都会查找
+    2. 如果T是参数化类型，比如List[String],那么List的伴生对象和String的也会被搜索
+    3. 如果T是一个单例类型p.T，那么p也会被搜索
+    4. 如果T是个类型注入S#T，那么S和T都被搜索
+
+
+
+
