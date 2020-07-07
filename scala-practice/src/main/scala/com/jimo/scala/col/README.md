@@ -1,0 +1,11 @@
+
+# scala集合基本介绍
+
+1. scala同时支持可变和不可变集合，不可变集合可安全的并发访问
+2. 2个主要的包：
+    * 不可变：scala.collection.immutable
+    * 可变：scala.collection.mutable
+3. scala默认采用不可变集合，对于**几乎**所有集合类，scala都提供了2个版本
+
+不可变：集合本身内存地址不可变
+
