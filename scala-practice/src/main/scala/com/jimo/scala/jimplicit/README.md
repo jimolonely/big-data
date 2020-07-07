@@ -105,5 +105,46 @@ class DB {
   }
 ```
 
+# 隐式值
 
+也叫隐式变量，将某个形参标记为implicit，那么编译器会在方法省略隐式参数时自动调用。
+
+```scala
+  def main(args: Array[String]): Unit = {
+    implicit val str: String = "jimo"
+
+    def hello(implicit name: String): Unit = {
+      println(s"hello,$name")
+    }
+
+    hello("hehe")
+    hello
+  }
+```
+编译后结果：
+
+```java
+  public void main(String[] args) {
+    String str = "jimo";
+    hello$1("hehe");
+    hello$1(str);
+  }
+  
+  private final void hello$1(String name) {
+    (new String[2])[0] = "hello,";
+    (new String[2])[1] = "";
+    scala.Predef$.MODULE$.println((new StringContext((Seq)scala.Predef$.MODULE$.wrapRefArray((Object[])new String[2]))).s((Seq)scala.Predef$.MODULE$.genericWrapArray(new Object[] { name })));
+  }
+```
+
+测试：
+
+```scala
+    implicit val str: String = "jimo"
+    def hi(implicit name: String = "lily"): Unit = {
+      println(s"hi, $name")
+    }
+    hi // 输出jimo
+```
+隐式值优先
 
