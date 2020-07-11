@@ -96,3 +96,34 @@
     scala.Predef$.MODULE$.refArrayOps((Object[])arr).foreach((Function1)new ColDemo04$$anonfun$main$1());
   }
 ```
+
+# scala数组与java数组互换
+
+### scala转java
+```scala
+    val arr = ArrayBuffer("1", "2", "3")
+    import scala.collection.JavaConversions.bufferAsJavaList
+
+    val builder = new ProcessBuilder(arr)
+    val list = builder.command()
+    println(list) // [1, 2, 3]
+```
+注意这个bufferAsJavaList，实际上是个隐式转换：
+```scala
+  implicit def bufferAsJavaList[A](b: mutable.Buffer[A]): ju.List[A] = b match {
+    case JListWrapper(wrapped) => wrapped
+    case _ => new MutableBufferWrapper(b)
+  }
+```
+
+### java转scala
+
+```scala
+    import scala.collection.JavaConversions.asScalaBuffer
+    import scala.collection.mutable
+
+    val scalaArr: mutable.Buffer[String] = list
+    println(scalaArr) // ArrayBuffer(1, 2, 3)
+```
+
+
