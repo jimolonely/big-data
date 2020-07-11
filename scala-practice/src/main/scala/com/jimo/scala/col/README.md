@@ -77,3 +77,22 @@
     arr04.foreach(println)
 ```
 
+# 多维数组
+
+```scala
+    val arr = Array.ofDim[Int](3, 4)
+    arr(1)(1) = 3
+    for (a1 <- arr) {
+      for (elem <- a1) {
+        print(elem + ",")
+      }
+      println()
+```
+看下底层：
+```java
+  public void main(String[] args) {
+    int[][] arr = (int[][])scala.Array$.MODULE$.ofDim(3, 4, scala.reflect.ClassTag$.MODULE$.Int());
+    arr[1][1] = 3;
+    scala.Predef$.MODULE$.refArrayOps((Object[])arr).foreach((Function1)new ColDemo04$$anonfun$main$1());
+  }
+```
