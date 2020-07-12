@@ -18,5 +18,13 @@ object ColDemo07 {
     // 左边追加
     val list4 = 33 +: list1
     println(list4) // List(33, 1, 2, AA)
+
+    val list5 = List(3, 4, "jimo")
+    val list6 = 4 :: 5 :: list5 :: 3 :: Nil
+    // 从右往左，从后往前塞
+    println(list6) // List(4, 5, List(3, 4, jimo), 3)
+    val list7 = 4 :: 5 :: list5 ::: 3 :: Nil
+    // 解构
+    println(list7) // List(4, 5, 3, 4, jimo, 3)
   }
 }

@@ -193,6 +193,23 @@ println(list1(2)) // AA
     println(list4) // List(33, 1, 2, AA)
 ```
 
+### 追加元素的符号 ::
+
+```scala
+    val list5 = List(3, 4, "jimo")
+    val list6 = 4 :: 5 :: list5 :: 3 :: Nil
+    // 从右往左，从后往前塞
+    println(list6) // List(4, 5, List(3, 4, jimo), 3)
+    val list7 = 4 :: 5 :: list5 ::: 3 :: Nil
+    // 解构
+    println(list7) // List(4, 5, 3, 4, jimo, 3)
+```
+
+
+
+
+
+
 # 集合练习
 
 ### 1.生成随机数数组
