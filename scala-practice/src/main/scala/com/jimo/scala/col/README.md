@@ -193,4 +193,35 @@ println(list1(2)) // AA
     println(list4) // List(33, 1, 2, AA)
 ```
 
+# 集合练习
+
+### 1.生成随机数数组
+
+```scala
+  def mkArr(n: Int): Array[Int] = {
+    val a = new Array[Int](n)
+    val random = new Random()
+    for (i <- a) yield random.nextInt(n)
+  }
+```
+
+### 2.交换相邻的2个元素
+
+```scala
+输入
+5 9 3 10 1 1 2 0 0 7 8 
+输出
+9 5 10 3 1 1 0 2 7 0 8 
+```
+主要是util的使用
+```scala
+  def revert(arr: Array[Int]): Unit = {
+    for (i <- 0 until(arr.length - 1, 2)) {
+      val t = arr(i)
+      arr(i) = arr(i + 1)
+      arr(i + 1) = t
+    }
+  }
+```
+
 
