@@ -399,5 +399,32 @@ Exception in thread "main" java.util.NoSuchElementException: key not found: heig
     println(s1 ++ s2) // Set(1, 5, 2)
 ```
 
+# 高阶函数
+
+```scala
+  def main(args: Array[String]): Unit = {
+    println(test(twoFold, 2.0))
+  }
+
+  /**
+   * 以函数作为参数的函数
+   */
+  def test(f: Double => Double, d: Double): Double = {
+    f(d)
+  }
+
+  def twoFold(d: Double): Double = {
+    2 * d
+  }
+```
+
+将高阶函数应用于集合，函数式编程
+
+```scala
+    val l1 = List(1, 2, 3)
+    println(l1.map(_ * 2)) // List(2, 4, 6)
+```
+
+
 
 
