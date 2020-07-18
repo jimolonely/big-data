@@ -6,6 +6,15 @@ object ColDemo12 {
 
     val l1 = List(1, 2, 3)
     println(l1.map(_ * 2)) // List(2, 4, 6)
+
+    val names = List("Hehe", "Jimo", "Lily")
+    println(names.map(_.toUpperCase())) // List(HEHE, JIMO, LILY)
+
+    // List(H, E, H, E, J, I, M, O, L, I, L, Y)
+    println(names.flatMap(_.toUpperCase()))
+
+    println(names.filter(_.startsWith("J"))) // List(Jimo)
+    println(names.filter(_.startsWith("J")).map(_.toUpperCase()))
   }
 
   /**

@@ -401,6 +401,8 @@ Exception in thread "main" java.util.NoSuchElementException: key not found: heig
 
 # 高阶函数
 
+参数为函数
+
 ```scala
   def main(args: Array[String]): Unit = {
     println(test(twoFold, 2.0))
@@ -418,12 +420,39 @@ Exception in thread "main" java.util.NoSuchElementException: key not found: heig
   }
 ```
 
+## map
+
 将高阶函数应用于集合，函数式编程
 
 ```scala
     val l1 = List(1, 2, 3)
     println(l1.map(_ * 2)) // List(2, 4, 6)
+
+    val names = List("Hehe", "Jimo", "Lily")
+    print(names.map(_.toUpperCase())) // List(HEHE, JIMO, LILY)
 ```
+
+## flatmap
+
+集合中的每个元素的子元素映射到某个函数并返回新的集合。
+
+```scala
+    val names = List("Hehe", "Jimo", "Lily")
+    // List(H, E, H, E, J, I, M, O, L, I, L, Y)
+    println(names.flatMap(_.toUpperCase()))
+```
+
+## filter
+
+将符合要求的元素放到新集合
+
+过滤以J开始的元素
+```scala
+    val names = List("Hehe", "Jimo", "Lily")
+    println(names.filter(_.startsWith("J"))) // List(Jimo)
+```
+
+
 
 
 
