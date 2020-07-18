@@ -533,7 +533,14 @@ Exception in thread "main" java.util.NoSuchElementException: key not found: heig
     println(s.foldLeft(Map[Char, Int]())((map, c) => map + (c -> (map.getOrElse(c, 0) + 1))))
 ```
 
+## zip
+拉链（合并）：如果元素不匹配会丢失，按照最短长度
 
+```scala
+    val list1 = List(1, 2, 3, 8)
+    val list2 = List(4, 5, 6)
+    println(list1.zip(list2)) // List((1,4), (2,5), (3,6))
+```
 
 
 

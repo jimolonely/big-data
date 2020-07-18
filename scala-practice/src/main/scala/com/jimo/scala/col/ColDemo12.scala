@@ -70,6 +70,10 @@ object ColDemo12 {
 
     // 2. Map(A -> 14, B -> 10, S -> 1, D -> 10)
     println(s.foldLeft(Map[Char, Int]())((map, c) => map + (c -> (map.getOrElse(c, 0) + 1))))
+
+    val list1 = List(1, 2, 3, 8)
+    val list2 = List(4, 5, 6)
+    println(list1.zip(list2)) // List((1,4), (2,5), (3,6))
   }
 
   /**
