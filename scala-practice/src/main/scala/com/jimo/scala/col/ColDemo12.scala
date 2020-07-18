@@ -1,5 +1,7 @@
 package com.jimo.scala.col
 
+import scala.collection.mutable.ArrayBuffer
+
 object ColDemo12 {
   def main(args: Array[String]): Unit = {
     println(test(twoFold, 2.0))
@@ -49,6 +51,25 @@ object ColDemo12 {
     // foldRight
     println((nums :\ 1) (_ + _)) // 29
     println((nums :\ 4) (_ - _)) // 0
+
+    println(nums.scanLeft(1)(_ + _)) // List(1, 2, 4, 7, 11, 16, 22, 29)
+    println(nums.scanLeft(28)(_ - _)) // List(28, 27, 25, 22, 18, 13, 7, 0)
+    println(nums.scanRight(1)(_ + _)) // List(29, 28, 26, 23, 19, 14, 8, 1)
+    println(nums.scanRight(4)(_ - _)) // List(0, 1, 1, 2, 2, 3, 3, 4)
+
+    // 1.
+    val s = "AAAAAAAAAAAAAABBBBBBBBBBSDDDDDDDDDD"
+    val buf = ArrayBuffer[Char]()
+
+    println(s.foldLeft(buf)((b, c) => {
+      b.append(c);
+      b
+    }))
+    println(buf)
+    // ArrayBuffer(A, A, A, A, A, A, A, A, A, A, A, A, A, A, B, B, B, B, B, B, B, B, B, B, S, D, D, D, D, D, D, D, D, D, D)
+
+    // 2. Map(A -> 14, B -> 10, S -> 1, D -> 10)
+    println(s.foldLeft(Map[Char, Int]())((map, c) => map + (c -> (map.getOrElse(c, 0) + 1))))
   }
 
   /**

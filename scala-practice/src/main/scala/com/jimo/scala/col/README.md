@@ -500,6 +500,38 @@ Exception in thread "main" java.util.NoSuchElementException: key not found: heig
     println((nums :\ 4) (_ - _)) // 0
 ```
 
+## scan
+
+扫描：对集合的每个元素做fold操作，但会把中间结果放到一个集合中保存
+
+```scala
+    println(nums.scanLeft(1)(_ + _)) // List(1, 2, 4, 7, 11, 16, 22, 29)
+    println(nums.scanLeft(28)(_ - _)) // List(28, 27, 25, 22, 18, 13, 7, 0)
+    println(nums.scanRight(1)(_ + _)) // List(29, 28, 26, 23, 19, 14, 8, 1)
+    println(nums.scanRight(4)(_ - _)) // List(0, 1, 1, 2, 2, 3, 3, 4)
+```
+
+## 练习
+
+1. 使用foldLeft把字符放进array里
+```scala
+    val s = "AAAAAAAAAAAAAABBBBBBBBBBSDDDDDDDDDD"
+    val buf = ArrayBuffer[Char]()
+
+    println(s.foldLeft(buf)((b, c) => {
+      b.append(c);
+      b
+    }))
+    println(buf)
+    // ArrayBuffer(A, A, A, A, A, A, A, A, A, A, A, A, A, A, B, B, B, B, B, B, B, B, B, B, S, D, D, D, D, D, D, D, D, D, D)
+```
+
+2. 统计字符出现的次数
+
+```scala
+    // 2. Map(A -> 14, B -> 10, S -> 1, D -> 10)
+    println(s.foldLeft(Map[Char, Int]())((map, c) => map + (c -> (map.getOrElse(c, 0) + 1))))
+```
 
 
 
