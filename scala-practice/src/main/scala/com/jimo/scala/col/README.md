@@ -452,6 +452,54 @@ Exception in thread "main" java.util.NoSuchElementException: key not found: heig
     println(names.filter(_.startsWith("J"))) // List(Jimo)
 ```
 
+## reduce
+
+简化版折叠
+
+```scala
+    val nums = List(1, 2, 3, 4, 5, 6, 7)
+    println(nums.reduce(_ + _)) // 28
+    println(nums.sum) // 28
+    /**
+     * 1-2=-1
+     * -1-3=-4
+     * ...
+     * -19-7=-26
+     */
+    println(nums.reduceLeft(_ - _)) // -26
+    /**
+     * 6-7=-1
+     * 5-(-1)=6
+     * 4-6=-2
+     * 3-(-2)=5
+     * 2-5=-3
+     * 1-(-3)=4
+     */
+    println(nums.reduceRight(_ - _)) // 4
+```
+
+## fold
+
+折叠: 相比于reduce，多了一个初始值
+
+```scala
+    val nums = List(1, 2, 3, 4, 5, 6, 7)
+    println(nums.fold(1)(_ + _)) // 29
+    println(nums.foldLeft(1)(_ + _)) // 29
+    println(nums.foldRight(1)(_ + _)) // 29
+    println(nums.foldLeft(28)(_ - _)) // 0
+    println(nums.foldRight(4)(_ - _)) // 0
+```
+缩写方式：
+```scala
+    // foldLeft
+    println((1 /: nums) (_ + _)) // 29
+    println((28 /: nums) (_ - _)) // 0
+    // foldRight
+    println((nums :\ 1) (_ + _)) // 29
+    println((nums :\ 4) (_ - _)) // 0
+```
+
 
 
 
