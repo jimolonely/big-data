@@ -542,5 +542,42 @@ Exception in thread "main" java.util.NoSuchElementException: key not found: heig
     println(list1.zip(list2)) // List((1,4), (2,5), (3,6))
 ```
 
+## 迭代器
+
+```scala
+    val list3 = List(2, 3, 4, 5)
+    val it = list3.iterator
+    while (it.hasNext) {
+      println(it.next())
+    }
+```
+
+## stream
+
+```scala
+    def numAdd(n: BigInt): Stream[BigInt] = n #:: numAdd(n + 1)
+
+    val stream1 = numAdd(1)
+    println(stream1) // Stream(1, ?)
+    // 我希望再取一个数据
+    println(stream1.tail) // Stream(2, ?)
+    println(stream1) // Stream(1, 2, ?)
+    println(stream1.head) // 1
+    println(stream1.take(2)) // Stream(1, ?)
+```
+
+## view
+
+可用于懒加载
+
+```scala
+    val viewSeq = (1 to 10).view.map(_ * 2).filter(_ % 2 == 0)
+    println(viewSeq) // SeqViewMF(...)
+    // 需要时才出结果
+    viewSeq.foreach(println)
+```
+
+
+
 
 
