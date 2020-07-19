@@ -94,6 +94,18 @@ object ColDemo12 {
     val viewSeq = (1 to 10).view.map(_ * 2).filter(_ % 2 == 0)
     println(viewSeq) // SeqViewMF(...)
     viewSeq.foreach(println)
+
+    println("==============并行集合==================")
+    // 常规：串行
+    (1 to 5).foreach(println)
+    // 并行: 随机顺序
+    (1 to 5).par.foreach(println)
+
+    val thread1 = (1 to 100).map(_ => Thread.currentThread().getName).distinct
+    println(thread1) // Vector(main)
+    val thread2 = (1 to 100).par.map { _ => Thread.currentThread().getName }.distinct
+    println(thread2) // ParVector(ForkJoinPool-1-worker-29, ForkJoinPool-1-worker-13, ForkJoinPool-1-worker-3, ForkJoinPool-1-worker-7, ForkJoinPool-1-worker-25, ForkJoinPool-1-worker-21, ForkJoinPool-1-worker-11, ForkJoinPool-1-worker-9, ForkJoinPool-1-worker-23, ForkJoinPool-1-worker-31, ForkJoinPool-1-worker-17, ForkJoinPool-1-worker-27)
+
   }
 
   /**

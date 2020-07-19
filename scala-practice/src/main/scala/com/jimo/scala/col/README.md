@@ -577,6 +577,26 @@ Exception in thread "main" java.util.NoSuchElementException: key not found: heig
     viewSeq.foreach(println)
 ```
 
+# 并行集合
+
+1. 充分利用多核CPU
+2. 主要用到的算法：分治；负载均衡算法(work stealin)
+
+```scala
+    // 常规：串行
+    (1 to 5).foreach(println)
+    // 并行: 随机顺序
+    (1 to 5).par.foreach(println)
+```
+
+再看个例子：我电脑有12个核,所以并行时全利用上了
+```scala
+    val thread1 = (1 to 100).map(_ => Thread.currentThread().getName).distinct
+    println(thread1) // Vector(main)
+    val thread2 = (1 to 100).par.map { _ => Thread.currentThread().getName }.distinct
+    println(thread2) // ParVector(ForkJoinPool-1-worker-29, ForkJoinPool-1-worker-13, ForkJoinPool-1-worker-3, ForkJoinPool-1-worker-7, ForkJoinPool-1-worker-25, ForkJoinPool-1-worker-21, ForkJoinPool-1-worker-11, ForkJoinPool-1-worker-9, ForkJoinPool-1-worker-23, ForkJoinPool-1-worker-31, ForkJoinPool-1-worker-17, ForkJoinPool-1-worker-27)
+```
+
 
 
 
