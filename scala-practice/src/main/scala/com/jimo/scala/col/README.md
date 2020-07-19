@@ -597,7 +597,44 @@ Exception in thread "main" java.util.NoSuchElementException: key not found: heig
     println(thread2) // ParVector(ForkJoinPool-1-worker-29, ForkJoinPool-1-worker-13, ForkJoinPool-1-worker-3, ForkJoinPool-1-worker-7, ForkJoinPool-1-worker-25, ForkJoinPool-1-worker-21, ForkJoinPool-1-worker-11, ForkJoinPool-1-worker-9, ForkJoinPool-1-worker-23, ForkJoinPool-1-worker-31, ForkJoinPool-1-worker-17, ForkJoinPool-1-worker-27)
 ```
 
+# 操作符扩展
 
+使用关键字做变量名
+```scala
+    val `var`: Int = 100
+    println(`var`)
+```
+后置操作符
+```scala
+    // 前置操作符
+    val n1 = 2
+    val n2 = 3
+    println(n1.+(n2)) // 等价于 n1 + n2
+
+    val p = new Person
+    p.+(10)
+    println(p.age) // 10
+    p + 10
+    println(p.age) // 20
+
+  class Person {
+    var age: Int = 0
+
+    def +(n: Int): Unit = {
+      age += n
+    }
+  }
+```
+前置操作符
+```scala
+    val op2 = new Op2
+    !op2 // !!!!
+
+class Op2 {
+  // unary:一元运算符
+  def unary_!(): Unit = println("!!!!")
+}
+```
 
 
 
