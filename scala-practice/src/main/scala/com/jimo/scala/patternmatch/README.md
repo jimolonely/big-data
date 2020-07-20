@@ -39,3 +39,14 @@ scala中的match是强大版switch语句。
     }
 ```
 
+# 模式中的变量
+
+```scala
+    val c = 'H'
+    c match {
+      case '+' => println("ok")
+      case myChar => println("Char:" + myChar)
+      case _ => println("default")
+    }
+```
+
