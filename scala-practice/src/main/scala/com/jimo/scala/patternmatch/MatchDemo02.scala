@@ -57,5 +57,50 @@ object MatchDemo02 {
       }
       println(res)
     }
+
+    object Square {
+      def unapply(z: Double): Option[Double] = Some(math.sqrt(z))
+
+      def apply(z: Double): Double = z * z
+    }
+
+    val number: Double = 49.0
+    number match {
+      case Square(n) => println(n) // 7.0
+      case _ => println("不匹配")
+    }
+
+    val n = Square(10)
+    n match {
+      case Square(n) => println(n) // 10.0
+      case _ => println("不匹配")
+    }
+
+    object Square2 {
+      def unapply(z: Double): Option[Double] = Some(z + 1)
+
+      def apply(z: Double): Double = z * z
+    }
+
+    val n1 = Square2(10)
+    n1 match {
+      case Square2(n) => println(n) // 101.0 = 10*10+1
+      case _ => println("不匹配")
+    }
+
+    object Name {
+      def unapplySeq(s: String): Option[Seq[String]] = {
+        if (s.contains(",")) Some(s.split(","))
+        else None
+      }
+    }
+
+    val names = "jimo,hehe,lily"
+
+    names match {
+      case Name(a, b, c) => println(s"${a}--${b}--${c}")
+      case Name(a, b) => println(s"${a}==${b}")
+      case _ => println("不匹配")
+    } // jimo--hehe--lily
   }
 }
