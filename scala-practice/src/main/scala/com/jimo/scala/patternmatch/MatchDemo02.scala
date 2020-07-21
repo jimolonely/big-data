@@ -24,5 +24,19 @@ object MatchDemo02 {
     typeMatch("hehe")
     typeMatch(Map(("name", 18)))
     typeMatch(Array(1, 2, 3))
+
+    // 数组匹配
+    for (arr <- Array(Array(0), Array(1, 0), Array(0, 1, 0),
+      Array(1, 1, 0), Array(1, 1, 0, 1), Array("hh", 123))) {
+      val res = arr match {
+        // 精确匹配Array(0)
+        case Array(0) => "0"
+        // 匹配2个元素的数组
+        case Array(x, y) => s"(${x},${y})"
+        case Array(0, _*) => "以0开头的数组"
+        case _ => "默认"
+      }
+      println(res)
+    }
   }
 }

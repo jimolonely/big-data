@@ -77,4 +77,28 @@ Array[Int]
 
 注意：编译器会预检查类型，要是不匹配，会报错。
 
+# 匹配数组
+
+```scala
+for (arr <- Array(Array(0), Array(1, 0), Array(0, 1, 0),
+  Array(1, 1, 0), Array(1, 1, 0, 1), Array("hh", 123))) {
+  val res = arr match {
+    // 精确匹配Array(0)
+    case Array(0) => "0"
+    // 匹配2个元素的数组
+    case Array(x, y) => s"(${x},${y})"
+    case Array(0, _*) => "以0开头的数组"
+    case _ => "默认"
+  }
+  println(res)
+}
+
+0
+(1,0)
+以0开头的数组
+默认
+默认
+(hh,123)
+```
+
 
