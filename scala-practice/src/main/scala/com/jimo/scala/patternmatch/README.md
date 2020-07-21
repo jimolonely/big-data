@@ -50,3 +50,31 @@ scala中的match是强大版switch语句。
     }
 ```
 
+# 类型匹配
+
+```scala
+def typeMatch(res: Any): Unit = {
+  res match {
+    case a: Int => println("整数")
+    case _: Map[String, Int] => println("map[String,Int]")
+    case _: Array[String] => println("Array[String]")
+    case _: Array[Int] => println("Array[Int]")
+    case _: BigInt => println("BigInt")
+    case _ => println("啥也不是")
+  }
+}
+
+typeMatch(3)
+typeMatch("hehe")
+typeMatch(Map(("name", 18)))
+typeMatch(Array(1, 2, 3))
+
+整数
+啥也不是
+map[String,Int]
+Array[Int]
+```
+
+注意：编译器会预检查类型，要是不匹配，会报错。
+
+
