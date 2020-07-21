@@ -101,4 +101,22 @@ for (arr <- Array(Array(0), Array(1, 0), Array(0, 1, 0),
 (hh,123)
 ```
 
+# 匹配列表
+
+```scala
+for (list <- Array(List(0), List(1, 0), List(0, 0, 0), List(1, 0, 0))) {
+  val res = list match {
+    case 0 :: Nil => "0"
+    case x :: y :: Nil => s"[${x},${y}]" // 2个元素
+    case 0 :: tail => "0..." // 0开头的
+    case _ => "其他"
+  }
+  println(res)
+}
+
+0
+[1,0]
+0...
+其他
+```
 

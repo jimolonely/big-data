@@ -38,5 +38,15 @@ object MatchDemo02 {
       }
       println(res)
     }
+
+    for (list <- Array(List(0), List(1, 0), List(0, 0, 0), List(1, 0, 0))) {
+      val res = list match {
+        case 0 :: Nil => "0"
+        case x :: y :: Nil => s"[${x},${y}]" // 2个元素
+        case 0 :: tail => "0..."
+        case _ => "其他"
+      }
+      println(res)
+    }
   }
 }
