@@ -120,3 +120,20 @@ for (list <- Array(List(0), List(1, 0), List(0, 0, 0), List(1, 0, 0))) {
 其他
 ```
 
+# 匹配元组
+
+```scala
+for (pair <- Array((0, 1), (1, 1), (1, 0, 2))) {
+  val res = pair match {
+    case (0, _) => "0..."
+    case (y, 0) => y
+    case _ => "其他"
+  }
+  println(res)
+}
+
+0...
+其他
+其他
+```
+
