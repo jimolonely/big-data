@@ -272,6 +272,20 @@ Currency(19.9,英镑)
   }
 ```
 
+# case中的中置表达式
+
+```scala
+List(1, 3, 4, 6) match {
+  case first :: second :: rest => println(first + " " + second + " " + rest.length)
+  case _ => println("匹配不到")
+} // 1 3 2
+
+List(1) match {
+  case first :: second :: rest => println(first + " " + second + " " + rest.length)
+  case _ => println("匹配不到")
+} // 匹配不到
+```
+
 
 
 
