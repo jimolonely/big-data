@@ -200,3 +200,79 @@ names match {
 
 # 样例类
 
+是被 case 修饰的类
+
+* 为了模式匹配而优化
+* 构造器每一个参数都为val，除非被显示声明为var
+* 样例类的伴生对象提供apply方法，这样我们不用new
+* 提供unapply方法让模式匹配可以工作
+
+```scala
+def main(args: Array[String]): Unit = {
+    for (amt <- Array(Dollar(100.0), Currency(1000, "RMB"), NoAmount)) {
+      val res = amt match {
+        case Dollar(v) => "$" + v
+        case Currency(v, u) => v + u
+        case NoAmount => "没钱"
+      }
+      println(amt + ":" + res)
+    }
+}
+
+abstract class Amount
+
+case class Dollar(value: Double) extends Amount
+
+case class Currency(value: Double, unit: String) extends Amount
+
+case object NoAmount extends Amount
+
+Dollar(100.0):$100.0
+Currency(1000.0,RMB):1000.0RMB
+NoAmount:没钱
+```
+
+样例类的copy方法
+
+```scala
+val c1 = Currency(19.9, "RMB")
+val c2 = c1.copy()
+val c3 = c1.copy(value = 29.9)
+val c4 = c1.copy(unit = "英镑")
+println(c2)
+println(c3)
+println(c4)
+
+Currency(19.9,RMB)
+Currency(29.9,RMB)
+Currency(19.9,英镑)
+```
+
+查看其编译后的源码可知生成了copy方法：
+```java
+  
+  public double value() {
+    return this.value;
+  }
+  
+  public String unit() {
+    return this.unit;
+  }
+  
+  public Currency copy(double value, String unit) {
+    return new Currency(value, unit);
+  }
+  
+  public double copy$default$1() {
+    return value();
+  }
+  
+  public String copy$default$2() {
+    return unit();
+  }
+```
+
+
+
+
+
