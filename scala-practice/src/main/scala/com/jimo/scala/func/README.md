@@ -1,4 +1,13 @@
 
+
+# 作为参数的函数
+
+```scala
+def plus(x: Int): Int = x + 1
+
+println(Array(1, 2, 3, 4).map(plus).mkString(",")) // 2,3,4,5
+```
+
 # 偏函数
 
 给定一个列表 `List(1,2,3,"abc")`, 返回所有数字+1，且过滤掉非数字。
@@ -45,11 +54,14 @@ println(list.collect(addOne2)) // List(2, 3, 4)
 println(list.collect { case i: Int => i + 1 })
 ```
 
-# 作为参数的函数
+# 匿名函数
 
 ```scala
-def plus(x: Int): Int = x + 1
-
-println(Array(1, 2, 3, 4).map(plus).mkString(",")) // 2,3,4,5
+val triple = (x: Double) => 3 * x
+println(triple(3.5)) // 10.5
+println(triple) // <function1>
 ```
+
+
+
 
