@@ -62,6 +62,32 @@ println(triple(3.5)) // 10.5
 println(triple) // <function1>
 ```
 
+# 高阶函数
+
+接收函数作为参数的函数。
+
+```scala
+// 以函数作为参数
+def test(f: Double => Double, n: Double) = {
+  f(n)
+}
+
+def sum(n: Double) = {
+  n + n
+}
+
+println(test(sum, 10.6)) // 21.2
+```
+
+高阶函数可以返回函数类型：
+```scala
+// 返回函数类型
+val minusXy = (x: Int) => (y: Int) => x - y
+println(minusXy(100)) // <function1>
+println(minusXy(100)(30)) // 70
+```
+
+这里使用到了闭包：内部函数访问了外部函数的变量
 
 
 
