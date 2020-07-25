@@ -89,5 +89,26 @@ println(minusXy(100)(30)) // 70
 
 这里使用到了闭包：内部函数访问了外部函数的变量
 
+# 参数类型推断
+
+* 可以省略能推断的参数类型
+* 当只有单个参数时，可以省略括号
+* 如果变量只在 `=>` 右边只出现一次，可以用 `_` 来代替
+
+```scala
+val list = List(1, 2, 3, 4)
+
+// 正常写法
+println(list.map((x: Int) => x + 1))
+// 类型推断省略
+println(list.map((x) => x + 1))
+// 一个参数可替换
+println(list.map(_ + 1))
+
+// 求和
+println(list.reduce(_ + _))
+```
+
+
 
 
