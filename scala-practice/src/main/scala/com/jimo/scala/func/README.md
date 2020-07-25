@@ -47,3 +47,9 @@ println(list.collect { case i: Int => i + 1 })
 
 # 作为参数的函数
 
+```scala
+def plus(x: Int): Int = x + 1
+
+println(Array(1, 2, 3, 4).map(plus).mkString(",")) // 2,3,4,5
+```
+
