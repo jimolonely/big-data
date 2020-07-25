@@ -345,5 +345,9 @@ def price(it: Item): Double = {
 println("总价为：" + price(sale)) // 总价为：115.0
 ```
 
+# sealed class（密封类）
+
+被sealed声明的类，只能在当前源文件引用。
+
 
 
