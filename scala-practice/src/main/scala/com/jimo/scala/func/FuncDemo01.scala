@@ -20,5 +20,15 @@ object FuncDemo01 {
     // map不能调偏函数
     val list2 = list.collect(addOne)
     println(list2) // List(2, 3, 4)
+
+    // 简化
+    def addOne2: PartialFunction[Any, Int] = {
+      case i: Int => i + 1
+    }
+
+    println(list.collect(addOne2)) // List(2, 3, 4)
+
+    // 更简化
+    println(list.collect { case i: Int => i + 1 })
   }
 }
