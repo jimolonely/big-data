@@ -183,3 +183,64 @@ def equal(s1: String, s2: String): Boolean = {
 println("hello".myEq("HellO")(equal))
 ```
 
+# 抽象控制
+
+就是满足下面条件的函数：
+
+1. 参数是函数
+2. 函数参数没有输入值也没有返回值
+
+正常写法：
+```scala
+def myRunInThread(f1: () => Unit): Unit = {
+  new Thread {
+    override def run(): Unit = {
+      f1()
+    }
+  }.start()
+}
+
+myRunInThread(() => {
+  println("开始工作，3秒完成")
+  Thread.sleep(3000)
+  println("ok")
+})
+```
+
+去掉括号，就变成了控制抽象,看起来就像传进去一个代码块
+
+```scala
+def myRunInThread2(f1: => Unit): Unit = {
+  new Thread {
+    override def run(): Unit = {
+      f1
+    }
+  }.start()
+}
+
+myRunInThread2({
+  println("开始工作，3秒完成")
+  Thread.sleep(3000)
+  println("ok")
+})
+```
+
+有什么用呢？可以模拟一个 do while语句
+
+```scala
+var x = 10
+
+@scala.annotation.tailrec
+def until(condition: => Boolean)(block: => Unit): Unit = {
+  if (!condition) {
+    block
+    until(condition)(block)
+  }
+}
+
+until(x == 0) {
+  println(x)
+  x -= 1
+}
+```
+
