@@ -109,6 +109,28 @@ println(list.map(_ + 1))
 println(list.reduce(_ + _))
 ```
 
+# 闭包
 
+是一个函数与其相关引用环境（变量）组成的一个整体。
+
+```scala
+def makeSuffix(suffix: String) = {
+  (name: String) => {
+    if (name.endsWith(suffix)) {
+      name
+    } else {
+      name + suffix
+    }
+  }
+}
+
+val jpg = makeSuffix(".jpg")
+println(jpg("a.jpg")) // a.jpg
+println(jpg("b")) // b.jpg
+```
+
+闭包的好处：
+
+* 传统方法我们也可以实现，只是每次都会传递 suffix参数，有点冗余和不优美。
 
 
