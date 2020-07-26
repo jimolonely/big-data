@@ -133,4 +133,53 @@ println(jpg("b")) // b.jpg
 
 * 传统方法我们也可以实现，只是每次都会传递 suffix参数，有点冗余和不优美。
 
+# 函数柯里化
+
+1. 接受多个参数的函数都可转化为接受单个参数的函数，转换过程叫柯里化
+2. 柯里化就是证明了函数只需要一个参数而已
+3. 柯里化就是以函数为主体思想发展的必然结果
+
+```scala
+// 普通
+def mul1(x: Int, y: Int) = x * y
+println(mul1(10, 9))
+
+// 闭包
+def mul2(x: Int) = (y: Int) => x * y
+println(mul2(10)(9))
+
+// 柯里化
+def mul3(x: Int)(y: Int) = x * y
+println(mul3(10)(9))
+```
+
+最佳实践
+
+比较2个字符串在忽略大小写时是否相等：
+
+可以分为2步：
+
+1. 全部大写或小写
+2. 比较大小
+
+```scala
+// 普通方式
+def eq(s1: String)(s2: String): Boolean = {
+  s1.toLowerCase == s2.toLowerCase
+}
+println(eq("hello")("HellO"))
+
+// 高级的方式
+implicit class AddEqToString(s: String) {
+  def myEq(ss: String)(f: (String, String) => Boolean): Boolean = {
+    f(s.toLowerCase, ss.toLowerCase)
+  }
+}
+
+def equal(s1: String, s2: String): Boolean = {
+  s1.equals(s2)
+}
+
+println("hello".myEq("HellO")(equal))
+```
 
