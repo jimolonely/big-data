@@ -177,3 +177,30 @@ Exception in thread "main" java.lang.IllegalStateException: No ExecutorFactory f
 6> (j,2)
 ```
 
+## 通过界面观察
+
+手动配置端口
+```java
+Configuration conf = new Configuration();
+conf.setInteger(RestOptions.PORT, 8082);
+StreamExecutionEnvironment env = StreamExecutionEnvironment
+    .createLocalEnvironment(1, conf);
+```
+
+```xml
+<dependency>
+    <groupId>org.apache.flink</groupId>
+    <artifactId>flink-runtime-web_2.12</artifactId>
+    <version>${flink-version}</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+需要增加 `flink-runtime-web`依赖，否则会出现报错：
+
+```json 
+{“errors“:[“Not found.“]}
+```
+
+然后访问 [http://localhost:8082](http://localhost:8082) 即可看到页面.
+
