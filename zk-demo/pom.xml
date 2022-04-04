@@ -4,17 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jimo</groupId>
+    <parent>
+        <groupId>com.jimo</groupId>
+        <artifactId>big-data</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
     <artifactId>zk-demo</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-        </dependency>
-
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -24,7 +22,7 @@
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
-            <version>3.4.10</version>
+            <version>3.4.14</version>
         </dependency>
     </dependencies>
 </project>
