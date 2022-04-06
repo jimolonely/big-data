@@ -12,7 +12,8 @@ public class Main {
 
         final DataStreamSource<StockPrice> source = env.addSource(new StockSource());
 
-        maxPrice(source);
+//        maxPrice(source);
+        exchangeRateChange(source);
 
         env.execute();
     }
@@ -29,5 +30,15 @@ public class Main {
                 .timeWindow(Time.seconds(5))
                 .maxBy("price");
         maxPrice.print();
+    }
+
+    /**
+     * 价格汇率转换，假设*6转成美元
+     */
+    private static void exchangeRateChange(DataStreamSource<StockPrice> source) {
+        source.map(s -> {
+            s.price *= 6;
+            return s;
+        }).print();
     }
 }

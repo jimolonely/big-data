@@ -106,4 +106,26 @@ private static void maxPrice(DataStreamSource<StockPrice> source) {
 ```
 
 
+## 汇率转换
+
+```java
+/**
+ * 价格汇率转换，假设*6转成美元
+ */
+private static void exchangeRateChange(DataStreamSource<StockPrice> source) {
+    source.map(s -> {
+        s.price *= 6;
+        return s;
+    }).print();
+}
+```
+结果：
+```shell
+1> StockPrice(name=股票8, ts=1649234361306, price=197.5135913210384, volume=23)
+2> StockPrice(name=股票3, ts=1649234361306, price=665.1784903297744, volume=61)
+12> StockPrice(name=股票0, ts=1649234361296, price=231.34045958821943, volume=92)
+8> StockPrice(name=股票4, ts=1649234361430, price=118.0472729499752, volume=13)
+6> StockPrice(name=股票1, ts=1649234361430, price=377.85022764168264, volume=36)
+9> StockPrice(name=股票9, ts=1649234361430, price=419.03921936948564, volume=28)
+```
 
