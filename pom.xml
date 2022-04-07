@@ -15,6 +15,7 @@
         <module>spark-practice</module>
         <module>zk-demo</module>
         <module>flink-practice</module>
+        <module>temp-test</module>
     </modules>
 
     <dependencies>
