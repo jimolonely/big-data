@@ -46,6 +46,39 @@ final WindowedStream<StockPrice, String, TimeWindow> window2 = source
         .window(SlidingProcessingTimeWindows.of(Time.seconds(10), Time.seconds(5)));
 ```
 
+## 会话窗口
+
+会话窗口模式下，两个窗口之间有一个间隙，称为Session Gap。
+当一个窗口在大于Session Gap的时间内没有接收到新数据时，窗口将关闭。
+在这种模式下，窗口的Size是可变的，每个窗口的开始和结束时间并不是确定的。
+我们可以设置定长的Session Gap，也可以使用SessionWindowTimeGapExtractor动态地确定Session Gap的值。
+
+```java
+final DataStreamSource<StockPrice> source = env.addSource(new StockSource());
+final WindowedStream<StockPrice, String, TimeWindow> fixGapWindow = source
+        .keyBy(s -> s.name)
+        .window(EventTimeSessionWindows.withGap(Time.seconds(30)));
+
+WindowedStream<StockPrice, String, TimeWindow> dynamicGapWindow = source
+        .keyBy(s -> s.name)
+        .window(EventTimeSessionWindows.withDynamicGap(new SessionWindowTimeGapExtractor<StockPrice>() {
+            @Override
+            public long extract(StockPrice element) {
+                return element.volume;
+            }
+        }));
+```
+
+## 全局窗口
+
+全局窗口的 assigner 将拥有相同 key 的所有数据分发到一个全局窗口。 
+这样的窗口模式仅在你指定了自定义的 trigger 时有用。 
+否则，计算不会发生，因为全局窗口没有天然的终点去触发其中积累的数据。
+
+```java
+final DataStreamSource<StockPrice> source = env.addSource(new StockSource());
+source.keyBy(s -> s.name).window(GlobalWindows.create());
+```
 
 
 
