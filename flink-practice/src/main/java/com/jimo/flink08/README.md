@@ -98,7 +98,50 @@ private static class StockIncreaseInfoFunction extends KeyedProcessFunction<Stri
 1> 您的股票股票9在2000ms时间内持续上涨，请关注异动！
 ```
 
+# 旁路输出
 
+[https://nightlies.apache.org/flink/flink-docs-master/zh/docs/dev/datastream/side_output/](https://nightlies.apache.org/flink/flink-docs-master/zh/docs/dev/datastream/side_output/)
+
+ProcessFunction的另一大特色功能是可以将一部分数据发送到另外一个数据流中，而且输出的两个数据流数据类型可以不一样。这个功能被称为旁路输出（SideOutput）。
+
+下面旁路输出Tag的类型定义为`String`,输出高交易量的数据。
+
+```java
+public static void main(String[] args) throws Exception {
+    final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+    // 这需要是一个匿名的内部类，以便我们分析类型
+    OutputTag<String> highVolumeOutput = new OutputTag<String>("high-volume-tag") {
+    };
+
+    final DataStreamSource<StockPrice> source = env.addSource(new StockSource());
+    final DataStream<String> sideOutput = source.keyBy(s -> s.name)
+            .process(new HighVolumeOutputFunction(highVolumeOutput))
+            .getSideOutput(highVolumeOutput);
+
+    sideOutput.print();
+
+    env.execute();
+}
+
+private static class HighVolumeOutputFunction extends KeyedProcessFunction<String, StockPrice, String> {
+
+    private OutputTag<String> highVolumeOutput;
+
+    public HighVolumeOutputFunction(OutputTag<String> highVolumeOutput) {
+        this.highVolumeOutput = highVolumeOutput;
+    }
+
+    @Override
+    public void processElement(StockPrice stock, Context ctx, Collector<String> out) throws Exception {
+        if (stock.volume > 80) {
+            ctx.output(highVolumeOutput, "高交易量：" + stock.volume);
+        } else {
+            out.collect("普通交易量");
+        }
+    }
+}
+```
 
 
 
