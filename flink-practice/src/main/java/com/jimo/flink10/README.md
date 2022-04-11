@@ -125,3 +125,43 @@ maxVolume.print();
 2> (股票5,8)
 ```
 
+## 增量聚合的 ProcessWindowFunction
+
+将Reduce的输出交给ProcessWindowFunction作为输入，下面求解窗口内最大价格和窗口开始结束时间。
+
+```java
+env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
+DataStreamSource<StockPrice> source = env.addSource(new StockSource());
+SingleOutputStreamOperator<Tuple3<Double, Long, Long>> maxPriceWithTime = source
+        .keyBy(s -> s.name)
+        .timeWindow(Time.seconds(5))
+        .reduce(new ReduceFunction<StockPrice>() {
+            @Override
+            public StockPrice reduce(StockPrice s1, StockPrice s2) throws Exception {
+                return s1.price > s2.price ? s1 : s2;
+            }
+        }, new ProcessWindowFunction<StockPrice, Tuple3<Double, Long, Long>, String, TimeWindow>() {
+
+            @Override
+            public void process(String s, Context context, Iterable<StockPrice> elements, Collector<Tuple3<Double, Long, Long>> out) throws Exception {
+                final StockPrice max = elements.iterator().next();
+                out.collect(Tuple3.of(max.price, context.window().getStart(), context.window().getEnd()));
+            }
+        });
+maxPriceWithTime.print();
+```
+结果
+```shell
+1> (75.64519184990137,1649681725000,1649681730000)
+2> (90.33051546140071,1649681725000,1649681730000)
+1> (98.65336240929017,1649681725000,1649681730000)
+6> (95.58319525432499,1649681725000,1649681730000)
+4> (99.78737156929158,1649681725000,1649681730000)
+8> (98.52193552747589,1649681725000,1649681730000)
+4> (92.49721104781192,1649681725000,1649681730000)
+6> (90.58396180462613,1649681725000,1649681730000)
+8> (82.74862231487495,1649681725000,1649681730000)
+6> (96.45225463450456,1649681725000,1649681730000)
+```
+
+
