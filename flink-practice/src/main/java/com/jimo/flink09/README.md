@@ -32,6 +32,19 @@ source.keyBy(s -> s.name).timeWindow(Time.seconds(5));
 
 ## 滑动窗口
 
+滑动窗口以一个步长（Slide）不断向前滑动，窗口的Size固定。
+Slide小于Size时，相邻窗口会重叠，一个元素会被分配到多个窗口；Slide大于Size时，有些元素可能被丢掉。
+
+```java
+final DataStreamSource<StockPrice> source = env.addSource(new StockSource());
+final WindowedStream<StockPrice, String, TimeWindow> window = source
+        .keyBy(s -> s.name)
+        .window(SlidingEventTimeWindows.of(Time.seconds(10), Time.seconds(5)));
+
+final WindowedStream<StockPrice, String, TimeWindow> window2 = source
+        .keyBy(s -> s.name)
+        .window(SlidingProcessingTimeWindows.of(Time.seconds(10), Time.seconds(5)));
+```
 
 
 
