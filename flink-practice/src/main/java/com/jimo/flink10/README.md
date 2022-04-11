@@ -164,4 +164,36 @@ maxPriceWithTime.print();
 6> (96.45225463450456,1649681725000,1649681730000)
 ```
 
+## Trigger
+
+触发器（Trigger）决定了何时启动窗口处理函数来处理窗口中的数据，以及何时将窗口内的数据清除。
+
+Trigger 接口提供了五个方法来响应不同的事件：
+
+* onElement() 方法在每个元素被加入窗口时调用。
+* onEventTime() 方法在注册的 event-time timer 触发时调用。
+* onProcessingTime() 方法在注册的 processing-time timer 触发时调用。
+* onMerge() 方法与有状态的 trigger 相关。该方法会在两个窗口合并时， 将窗口对应 trigger 的状态进行合并，比如使用会话窗口时。
+* 最后，clear() 方法处理在对应窗口被移除时所需的逻辑。
+
+当满足某个条件，Trigger会返回一个TriggerResult类型的结果，TriggerResult是一个枚举类型，它有下面几种情况。
+
+* CONTINUE：什么都不做。
+* FIRE：启动计算并将结果发送给下游算子，不清除窗口数据。
+* PURGE：清除窗口数据但不执行计算。
+* FIRE_AND_PURGE：启动计算，发送结果然后清除窗口数据。
+
+**在自定义Trigger时，如果使用了状态，一定要使用clear()方法将状态数据清除，否则随着窗口越来越多，状态数据会越积越多。**
+
+## Evictor
+
+清除器（Evictor）是在WindowAssigner和Trigger的基础上的一个可选选项，用来清除一些数据。
+
+evictBefore()和evictAfter()分别在窗口处理函数之前和之后被调用.
+
+清除逻辑主要针对全量计算，对于增量计算的ReduceFunction和AggregateFunction，我们没必要使用Evictor。
+
+* CountEvictor
+* TimeEvictor
+
 
