@@ -14,7 +14,7 @@
     <properties>
         <package.mainClass>com.jimo.SimpleApp</package.mainClass>
 
-        <spark-version>2.4.0</spark-version>
+        <spark-version>3.4.0</spark-version>
         <scala-version>2.11.12</scala-version>
         <scala-base>2.12</scala-base>
     </properties>
